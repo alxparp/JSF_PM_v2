@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition>
+            <div id="header">
+                <div id="logo">#{msg.logo}</div>
+                <div class="search">
+                    <h:form styleClass="global_search" id="global_search" rendered="#{projectController.editable}">
+                        
+                        <h:inputText styleClass="search_field" 
+                                     id="search" 
+                                     value="#{taskController.search}" />
+                        
+                        <p:commandButton styleClass="create" 
+                                         value="#{msg.search}" 
+                                         action="#{taskController.fillTasksBySearch()}" 
+                                         update="@form :sortable_list :pages2"/>  
+                        
+                    </h:form>
+                </div>
+                <script language="javascript">
+                    document.getElementById("global_search:search").setAttribute("placeholder", "#{msg.global_search}");
+                </script>
+
+                <ul class="right_header_list ">
+                    <li>
+                        <ui:include src="/templates/locales.xhtml"/>
+                    </li>
+                    <li>
+                        <h:form>
+                            <h:commandLink action="#{userController.logout()}" value="#{msg.exit}"/>
+                        </h:form>
+                    </li>
+                    <li tabindex="-1" class="li_class" style="color:white; margin-top: -2px; text-decoration: underline;">
+                        <div style="color:white;" onclick="blo()">#{msg.projects}</div>
+                        <ul class="ul_class">
+                            <h:form>
+                                <ui:repeat value="#{projectController.projectList}" var="project">
+                                    <li class="li_class">
+                                        <h:commandLink style="color:black;" value="#{project.name}">
+                                            <f:param name="project_id" value="#{project.id}" />
+                                            <f:ajax onevent="showProgress" event="click" render="@all" listener="#{taskController.fillTasksByProject()}" />
+                                        </h:commandLink>  
+                                    </li> <br />
+                                </ui:repeat>
+                                <li><h:commandLink style="color:black;" action="projects.xhtml" value="Редактировать"/></li>
+
+                            </h:form>
+                        </ul>
+                    </li>
+                    <li><a>#{user.username}</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+
+            <!--Заменить на uirepeat-->
+            <h:form rendered="#{projectController.editable}">
+                <div id="subheader">
+                    <ul class="subheader_list">
+                        <li><h:commandLink action="main.xhtml" value="#{msg.backlog}"/></li>
+                        <li><h:link outcome="sprints.xhtml" value="#{msg.sprints}"/></li>
+                        <li><h:commandLink action="boards.xhtml" value="#{msg.boards}"/></li>
+                        <li><h:link outcome="conversation.xhtml" value="#{msg.conversation}" /></li>
+                        <li><h:commandLink action="participants.xhtml" value="#{msg.participants}" /></li>
+                        <li><h:commandLink action="history.xhtml" value="#{msg.history}" /></li>
+                    </ul>
+                </div>
+            </h:form>
+        </ui:composition>
+    </h:body>
+</html>
+

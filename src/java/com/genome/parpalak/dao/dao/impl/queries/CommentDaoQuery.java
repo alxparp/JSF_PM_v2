@@ -1,0 +1,20 @@
+package com.genome.parpalak.dao.dao.impl.queries;
+
+public interface CommentDaoQuery {
+    
+    String MERGE_COMMENT_OBJECT = "INSERT INTO COMMENT(DESCRIPTION, TASK_ID, PARTICIPANT_ID) "
+                + "VALUES(?, ?, ?)";
+    
+    String DELETE_COMMENT = "DELETE FROM COMMENT WHERE COMMENT_ID = ?";
+    
+    String FIND_COMMENT_BY_ID = "SELECT COMMENT_ID, DESCRIPTION, TASK_ID, PARTICIPANT_ID FROM COMMENT WHERE COMMENT_ID = ?";
+    
+    String FIND_ALL_COMMENTS = "SELECT COMMENT_ID, DESCRIPTION, TASK_ID, PARTICIPANT_ID FROM COMMENT";
+    
+    String FIND_COMMENTS_BY_TASK = "SELECT C.COMMENT_ID, C.DESCRIPTION, P.NAME "
+                + "FROM COMMENT C, PARTICIPANT P "
+                + "WHERE P.PARTICIPANT_ID = C.PARTICIPANT_ID "
+                + "AND TASK_ID = ? "
+                + "ORDER BY C.COMMENT_ID DESC";
+    
+}
